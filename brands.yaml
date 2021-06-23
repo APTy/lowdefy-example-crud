@@ -4,12 +4,11 @@ properties:
   title: Brands
 requests:
   - id: get_brands
-    type: MongoDBAggregation # MongoDb Aggregation to get the table data.
-    connectionId: brands # Id of the connection defined in the lowdefy.yaml file.
+    type: AxiosHttp
+    connectionId: brands
     properties:
-      pipeline:
-        - $sort:
-            name: 1 # Sort results alphabetically according to the name.
+      url: /people
+
 events:
   # A list of actions that gets completed each time a user visits this page. 
   onEnter:
@@ -54,33 +53,24 @@ areas:
               params:
                 pageId: new-brand # The page id of the new brand page.
       # A List block to render the following blocks for all items in the brands page state array.
-      - id: brands 
+      - id: brands # NOTE: why does setting this as "brands_list" change behavior?
         type: List
         blocks:
-          - id: brands.$.container # Wrap all the blocks for a brands item in a box.
+          - id: brands.results.$.container # Wrap all the blocks for a brands item in a box.
             type: Box
             style:
               background: '#fff' # Give the box a white background and some spacing.
               margin: 10
               padding: 10
             blocks:
-              - id: brands.$.name # Show the item name as a title in the list.
+              - id: brands.results.$.name # Show the item name as a title in the list.
                 type: Title
                 properties:
                   content: 
-                    _state: brands.$.name
+                    _state: brands.results.$.name
                   level: 3
-              - id: brands.$.description # Show the item description as a paragraph in the list.
+              - id: brands.results.$.description # Show the item description as a paragraph in the list.
                 type: Paragraph
                 properties:
                   content: 
-                    _state: brands.$.description
-            events:
-              onClick:
-                - id: link_to_edit_brand # Link to the page where we will edit the clicked brand.
-                  type: Link
-                  params:
-                    pageId: edit-brand # The page id of the edit brand page.
-                    urlQuery:
-                      brand_id:
-                        _state: brands.$._id # Set the brand_id in the url query on the edit-brand page to the _id field of the clicked list item.
+                    _state: brands.results.$.description

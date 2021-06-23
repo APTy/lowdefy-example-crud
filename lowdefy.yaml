@@ -1,6 +1,6 @@
 
 name: Lowdefy Admin Example
-lowdefy: 3.10.1
+lowdefy: 3.18.0
 licence: MIT
 
 # description
@@ -16,22 +16,10 @@ licence: MIT
 
 # Define all the data connections, in this case the brands and products MongoDB collections.
 connections:
-  - id: brands # The connectionId that will be used when defining requests and mutations on our pages.
-    type: MongoDBCollection # The type of connection
+  - id: brands
+    type: AxiosHttp
     properties:
-      databaseName: example-crud # The database name.
-      collection: brands # The collection name.
-      databaseUri:
-        _secret: EXAMPLES_MDB # The database connection uri that is stored as a secret and accessed using the _secret operator.
-      write: true # Allows writes to the database. By default reads are allowed but writes are not.
-  - id: products
-    type: MongoDBCollection
-    properties:
-      databaseName: example-crud
-      collection: products
-      databaseUri:
-        _secret: EXAMPLES_MDB
-      write: true
+      baseURL: https://swapi.dev/api
 
 # Menus used in the app can be listed here
 # By default, the menu with id default, or the first menu defined is used.
